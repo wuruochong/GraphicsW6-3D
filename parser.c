@@ -96,6 +96,9 @@ void parse_file ( char * filename,
     char axis;
     int type;
     double step = 0.01;
+    double width;
+    double height;
+    double depth;
 
     if ( strncmp(line, "circle", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
@@ -183,6 +186,13 @@ void parse_file ( char * filename,
 
       matrix_mult(tmp, transform);
     }//end rotate
+
+    else if ( strncmp(line, "box",strlen(line)) == 0){
+      fgets(line, sizeof(line), f);
+      sscanf(line, "%lf %lf %lf %lf %lf %lf",
+      xvals, yvals, zvals, &width, &height, &depth);
+      add_box(edges, xvals[0], yvals[0], zvals[0], width, height, depth);
+    }
 
     else if ( strncmp(line, "ident", strlen(line)) == 0 ) {
       //printf("IDENT\t%s", line);
