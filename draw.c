@@ -47,6 +47,7 @@ void add_box( struct matrix * edges,
 				add_edge(edges, x, y, z-depth, x, y-height, z-depth);
 				add_edge(edges, x, y-height, z, x+width, y-height, z);
 				add_edge(edges, x, y, z-depth, x+width, y, z-depth);
+				return;
 }
 
 /*======== void add_sphere() ==========
@@ -67,6 +68,14 @@ void add_box( struct matrix * edges,
 void add_sphere( struct matrix * edges,
 		 double cx, double cy, double cz,
 		 double r, double step ) {
+	struct matrix * temp;
+	temp = generate_sphere(cx, cy, cz, r, step);
+	int count;
+	while (count < temp->lastcol){
+		add_point(edges, temp->m[0][count],
+			temp->m[1][count], temp->m[2][count]);
+		count++;
+	}
   return;
 }
 
@@ -84,7 +93,26 @@ void add_sphere( struct matrix * edges,
   ====================*/
 struct matrix * generate_sphere(double cx, double cy, double cz,
 				double r, double step ) {
-  return NULL;
+  struct matrix * res;
+	res = new_matrix(4,4);
+	matrix_init(res);
+	double x0, y0, z0, x1, y1, z1, rot, cir;
+	for (rot = step; rot <= 1.00001; rot+=step){
+		x0 = r*(cos(M_PI*step))+cx;
+		y0 = r*(sin(M_PI*step))*(cos(2*M_PI*rot))+cy;
+		z0 = r*(sin(M_PI*step))*(sin(2*M_PI*rot))+cz;
+		for(cir = step; cir <= 1.00001; cir+=step){
+			x1 = r*(cos(M_PI*cir))+cx;
+			y1 = r*(sin(M_PI*cir))*(cos(2*M_PI*rot))+cy;
+			z1 = r*(sin(M_PI*cir))*(sin(2*M_PI*rot))+cz;
+			add_edge(res, x0, y0, z0, x0, y0, z0);
+			x0 = x1;
+			y0 = y1;
+			z0 = z1;
+		}
+	}
+	return res;
+
 }
 
 /*======== void add_torus() ==========

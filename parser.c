@@ -194,6 +194,12 @@ void parse_file ( char * filename,
       add_box(edges, xvals[0], yvals[0], zvals[0], width, height, depth);
     }
 
+    else if ( strncmp(line, "sphere", strlen(line)) == 0){
+      fgets(line, sizeof(line), f);
+      sscanf(line, "%lf %lf %lf %lf", xvals, yvals, zvals, &r);
+      add_sphere(edges, xvals[0], yvals[0], zvals[0], r, 0.009);
+    }
+
     else if ( strncmp(line, "ident", strlen(line)) == 0 ) {
       //printf("IDENT\t%s", line);
       ident(transform);
