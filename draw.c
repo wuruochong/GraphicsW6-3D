@@ -164,13 +164,13 @@ struct matrix * generate_torus( double cx, double cy, double cz,
 	matrix_init(res);
 	double x0, y0, z0, x1, y1, z1, rot, cir;
 	for (rot = step; rot <= 1.00001; rot+=step){
-		x0 = cos(rot)*(r1*cos(step)+r2);
-		y0 = r1*sin(step);
-		z0 = -sin(rot)*(r1*cos(step)+r2);
+		x0 = cos(rot*2*M_PI)*(r1*cos(step*2*M_PI)+r2);
+		y0 = r1*sin(step*2*M_PI);
+		z0 = -sin(rot*2*M_PI)*(r1*cos(step*2*M_PI)+r2);
 		for(cir = step; cir <= 1.00001; cir+=step){
-			x1 = cos(rot)*(r1*cos(cir)+r2);
-			y1 = r1*sin(cir);
-			z1 = -sin(rot)*(r1*cos(cir)+r2);
+			x1 = cos(rot*2*M_PI)*(r1*cos(cir*2*M_PI)+r2);
+			y1 = r1*sin(cir*2*M_PI);
+			z1 = -sin(rot*2*M_PI)*(r1*cos(cir*2*M_PI)+r2);
 			add_edge(res, x0, y0, z0, x0, y0, z0);
 			x0 = x1;
 			y0 = y1;
